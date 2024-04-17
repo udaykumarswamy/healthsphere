@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HealthSphere</title>
+    <style>
+      /* Container to hold the buttons and the section */
+      .container {
+        display: flex; /* Use flexbox layout */
+        height: 100vh; /* Make the container take up the full height of the viewport */
+        font-family: Arial, sans-serif; /* Set font family */
+      }
+
+      /* Style the buttons */
+      .button1 {
+        background-color: #b63721; /* Blue */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+      }
+      .button2 {
+        background-color: #655f37; /* Blue */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+      }
+      .button3 {
+        background-color: #13810d; /* Blue */
+        border: none;
+        color: white;
+        padding: 15px 32px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 8px;
+        transition: background-color 0.3s;
+      }
+
+      /* Change the color of the buttons on hover */
+      .button:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+
+      /* Style the section on the right */
+      .section {
+        background-color: #f0f0f0;
+        padding: 20px;
+        flex-grow: 1; /* Allow the section to grow to fill the available space */
+        display: flex; /* Use flexbox layout for the section */
+        flex-direction: column; /* Arrange the items vertically */
+        justify-content: first baseline;
+        position: relative;
+        align-items: center; /* Center the content horizontally */
+        border-left: 1px solid #ccc; /* Add a border to separate the section from buttons */
+        width: 531px;
+      }
+
+      .chat-box {
+        width: 100%;
+        max-height: 90%;
+        overflow-y: auto;
+        padding: inherit;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        margin-bottom: 0px;
+        height: 70%;
+      }
+
+      .message {
+        background-color: #f2f2f2;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 10px;
+        max-width: 80%;
+        word-wrap: break-word; /* Wrap long words */
+      }
+
+      .message.sent {
+        background-color: #0084ff; /* Blue */
+        color: white;
+        align-self: flex-end;
+      }
+
+      .message.received {
+        background-color: #ddd; /* Light grey */
+        color: black;
+        align-self: flex-start;
+      }
+
+      input[type="text"] {
+        width: calc(100% - 120px); /* Adjust input width */
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        margin-right: 10px;
+        outline: none;
+      }
+      .input-container {
+        position: relative; /* Add position absolute */
+        bottom: 0; /* Align to the bottom */
+        width: 100%; /* Take up full width */
+        padding: 20px; /* Add padding */
+        background-color: #fff; /* White background */
+        border-top: 1px solid #ccc; /* Add border at the top */
+        display: flex; /* Use flexbox layout */
+        align-items: center; /* Center items vertically */
+      }
+
+      button[type="submit"] {
+        background-color: #4f7fad; /* Blue */
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+      }
+
+      button[type="submit"]:hover {
+        background-color: #0056b3; /* Darker blue on hover */
+      }
+
+      /* Disable scrolling */
+      body {
+        overflow: hidden;
+        margin: 0; /* Remove default margin */
+      }
+
+      /* Style the header */
+      header {
+        background-color: #333; /* Dark grey background */
+        color: white; /* White text */
+        padding: 20px; /* Add padding */
+        text-align: center; /* Center align text */
+        position: relative; /* Make the header position relative */
+      }
+
+      .time {
+        position: absolute; /* Position the time absolutely */
+        top: 50%; /* Align to the middle vertically */
+        right: 20px; /* Align to the right */
+        transform: translateY(-50%); /* Adjust for vertical alignment */
+        color: #fff; /* White text color */
+        padding-top: 90px;
+      }
+
+      #overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(
+          0,
+          0,
+          0,
+          0.5
+        ); /* Semi-transparent black overlay */
+        display: none; /* Hidden by default */
+        justify-content: center;
+        align-items: center;
+        z-index: 9999; /* Ensure it appears on top of other content */
+      }
+
+      .spinner {
+        border: 5px solid #f3f3f3; /* Light grey */
+        border-top: 5px solid #3498db; /* Blue */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+      }
+
+      @keyframes spin {
+        0% {
+          transform: rotate(0deg);
+        }
+        100% {
+          transform: rotate(360deg);
+        }
+      }
+
+      .loading-text {
+        color: white;
+        margin-top: 20px;
+      }
+
+      /* The Modal (background) */
+.modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 9999; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    background-color: #fefefe;
+    margin: 15% auto; /* 15% from the top and centered */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%; /* Could be more or less, depending on screen size */
+  }
+  
+  /* The Close Button */
+  .close {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+  }
+    </style>
+    <script>
+      /*
+      function sendMessage() {
+        var messageInput = document.getElementById("messageInput");
+        var message = messageInput.value.trim();
+        if (message !== "") {
+          var chatBox = document.getElementById("chatBox");
+          var messageDiv = document.createElement("div");
+          messageDiv.textContent = message;
+          messageDiv.classList.add("message", "sent");
+          chatBox.appendChild(messageDiv);
+          messageInput.value = ""; // Clear the input field after sending the message
+          // Scroll to the bottom of the chat box after adding a new message
+          chatBox.scrollTop = chatBox.scrollHeight;
+        }
+      }*/
+      function sendMessage() {
+        var messageInput = document.getElementById("messageInput");
+        var message = messageInput.value.trim();
+        
+        if (message !== "") {
+            var chatBox = document.getElementById("chatBox");
+            var messageDiv = document.createElement("div");
+            messageDiv.textContent = message;
+            messageDiv.classList.add("message", "sent");
+            chatBox.appendChild(messageDiv);
+            messageInput.value = ""; // Clear the input field after sending the message
+            chatBox.scrollTop = chatBox.scrollHeight;
+    
+            // Make an asynchronous request to another script
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "/chat", true);
+            xhr.setRequestHeader("Content-Type", "application/json");
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        // Handle the response from the other script
+                        var response = xhr.responseText;
+                        var responseDiv = document.createElement("div");
+                        responseDiv.textContent = response;
+                        responseDiv.classList.add("message", "received");
+                        chatBox.appendChild(responseDiv);
+                        chatBox.scrollTop = chatBox.scrollHeight;
+                    } else {
+                        // Handle errors
+                        console.error('Error:', xhr.status);
+                    }
+                }
+            };
+            // Send the message as JSON to the other script
+            xhr.send(JSON.stringify({ message: message }));
+        }
+    }
+    
+
+      // Function to update the time
+      function updateTime() {
+        // Get the current date and time
+        var now = new Date();
+        var date = now.getDate();
+        var month = now.getMonth();
+        var year = now.getFullYear();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var ampm = hours >= 12 ? "PM" : "AM";
+        hours = hours % 12;
+        hours = hours ? hours : 12; // Handle midnight (0 hours)
+        minutes = minutes < 10 ? "0" + minutes : minutes; // Add leading zero if minutes < 10
+        // Update the time in the HTML
+        var timeElement = document.getElementById("time");
+        if (timeElement) {
+          timeElement.innerText =
+            month +
+            1 +
+            "/" +
+            date +
+            "/" +
+            year +
+            " " +
+            hours +
+            ":" +
+            minutes +
+            " " +
+            ampm;
+        }
+      }
+
+      // Call updateTime function initially to set the time when the page loads
+      updateTime();
+
+      // Update the time every second
+      setInterval(updateTime, 1000);
+    </script>
+  </head>
+  <body>
+    <div id="overlay">
+      <div class="spinner"></div>
+      <div class="loading-text">Please wait...</div>
+    </div>
+    <header>
+      <h1>HealthSphere</h1>
+      <div class="time" id="time"></div>
+    </header>
+    <div class="container">
+      <div>
+        <button id="crawlButton" class="button1">Crawl data</button>
+        <button id="parseButton" class="button2">Parse data</button>
+      </div>
+      <div class="section">
+        <div class="chat-box" id="chatBox">
+          <!-- Dynamic chat messages will be added here -->
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            id="messageInput"
+            placeholder="Type your message..."
+          />
+          <button type="submit" onclick="sendMessage()">Send</button>
+        </div>
+      </div>
+    </div>
+    <!-- Modal -->
+<div id="myModal" class="modal">
+    <div class="modal-content">
+      <span class="close">&times;</span>
+      <p>Error while crawling!</p>
+    </div>
+  </div>
+  </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      document
+        .getElementById("crawlButton")
+        .addEventListener("click", function () {
+          showOverlay(); // Show loading message when crawl button is clicked
+
+          fetch("/crawl") // Make a GET request to the /crawl route
+            .then((response) => {
+              if (response.ok) {
+                console.log("Crawling started.");
+                // Simulate processing time with a timeout
+                setTimeout(function () {
+                  console.log("Crawling completed.");
+                  hideOverlay(); // Hide loading message when crawling is completed
+                }, 3000); // Simulated processing time (3 seconds)
+              } else {
+                console.error("Failed to start crawling.");
+                showModal()
+                hideOverlay(); // Hide loading message on error
+              }
+            })
+            .catch((error) => {
+              console.error("An error occurred:", error);
+              hideOverlay(); // Hide loading message on error
+            });
+        });
+    });
+    document.addEventListener("DOMContentLoaded", function () {
+      document
+        .getElementById("parseButton")
+        .addEventListener("click", function () {
+          showOverlay(); // Show loading message when crawl button is clicked
+
+          fetch("/parse") // Make a GET request to the /crawl route
+            .then((response) => {
+              if (response.ok) {
+                console.log("parsing started.");
+                // Simulate processing time with a timeout
+                setTimeout(function () {
+                  console.log("parsing completed.");
+                  hideOverlay(); // Hide loading message when crawling is completed
+                }, 3000); // Simulated processing time (3 seconds)
+              } else {
+                console.error("Failed to parse");
+                showModal()
+                hideOverlay(); // Hide loading message on error
+              }
+            })
+            .catch((error) => {
+              console.error("An error occurred:", error);
+              hideOverlay(); // Hide loading message on error
+            });
+        });
+    });
+
+    // Function to show the overlay
+    function showOverlay() {
+      document.getElementById("overlay").style.display = "flex";
+    }
+
+    // Function to hide the overlay
+    function hideOverlay() {
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function showModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "block";
+    }
+    
+    // Function to close the modal
+    function closeModal() {
+        var modal = document.getElementById("myModal");
+        modal.style.display = "none";
+    }
+
+    // Example usage: show the overlay for 3 seconds
+    showOverlay();
+    setTimeout(hideOverlay, 3000);
+  </script>
+</html>
+make section disable untill parse and crawl is dirty
