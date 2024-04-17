@@ -1,35 +1,46 @@
-import random
-import string
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Sat Apr 13 15:27:47 2024
+
+@author: uday_kumar_swamy
+"""
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
-nltk.download('punkt')
-import numpy as np
 import warnings
-warnings.filterwarnings('ignore')
-from PIL import Image 
-import pytesseract 
-import sys 
 import fitz
-from pdf2image import convert_from_path 
 import os
-import nltk
-from nltk.tokenize import word_tokenize
-import spacy
-import random
 import string
 import logging
 import logging.config
+import configparser
+nltk.download('punkt')
+warnings.filterwarnings('ignore')
 
+# Read the properties file
+config = configparser.ConfigParser()
+config.read('config.properties')
 
+logConf = config.get('LogFile', 'logConfiguration')
+downloadPath = config.get('download','downloadPath')
 
-logging.config.fileConfig('temp.conf')
+logging.config.fileConfig(logConf)
 logger = logging.getLogger('healthsphere')
-
+try:
+    os.mkdir(downloadPath)
+except:
+    logger.info('directory exists..')
 
 def read_pdf_files_in_directory():
+    """
+    Reads text from PDF files within a directory and constructs a corpus.
+
+    Returns:
+        str: The corpus containing text from all PDF files in the directory.
+    """
     logger.info('parsing started...')
-    pdf_directory = '/Users/uday_kumar_swamy/Documents/work/spring-2024/IR/IR_project/HealthSphere/healthdata'
+    pdf_directory = downloadPath
     corpus = ""
     if not os.path.exists(pdf_directory):
         print(f"Directory '{pdf_directory}' does not exist.")
@@ -44,34 +55,81 @@ def read_pdf_files_in_directory():
                 text = page.get_text()
                 corpus += text
             doc.close()
+    tokenise(corpus)
     logger.info('parsing completed...')
     return corpus
 
-sent_tokens = nltk.sent_tokenize(read_pdf_files_in_directory() ) #converts to list of scentences
-word_tokens = nltk.word_tokenize(read_pdf_files_in_directory() ) #converts to list of words
-sentToken = sent_tokens[:4]
-wordToken = word_tokens[:4]
+
+
+sent_tokens =[]
+word_tokens = []
+sentToken = []
+wordToken =[]
+def tokenise(corpus):
+    """
+    Tokenizes the input corpus into sentences and words.
+
+    Args:
+        corpus (str): The input text corpus.
+
+    Returns:
+        None
+    """
+    global sent_tokens, word_tokens, sentToken, wordToken
+    sent_tokens =  nltk.sent_tokenize(corpus) #converts to list of scentences
+    word_tokens = nltk.word_tokenize(corpus) #converts to list of words
+    sentToken = sent_tokens[:4]
+    wordToken = word_tokens[:4] 
+    
+ 
+   
+
 lemmer = nltk.stem.WordNetLemmatizer()
 nltk.download('wordnet')
-
-def LemTokens(tokens):
-    return [lemmer.lemmatize(token) for token in tokens]
 remove_punct_dict = dict((ord(punct), None) for punct in string.punctuation)
 
-def LemNormalize(text):
-    return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
 
-#Greetings
-GREETING_INPUTS = ("hello", "hi", "greetings", "sup", "what's up", "hey")
-GREETING_RESPONSES = ["hi", "hey", "nods", "hi there", "hello", "I am glad! you are talking to me"]
-def greeting(scentence):  
-    for word in scentence.split():
-        if word.lower() in GREETING_INPUTS:
-            return random.choice(GREETING_RESPONSES)
-        
+def LemTokens(tokens):
+    """
+    Lemmatizes a list of tokens using a lemmatizer.
+
+    Args:
+        tokens (list): A list of tokens to be lemmatized.
+        lemmer: A lemmatizer object.
+
+    Returns:
+        list: A list of lemmatized tokens.
+    """
+    return [lemmer.lemmatize(token) for token in tokens]
+
+
+def LemNormalize(text):
+    """
+    Normalizes and lemmatizes text.
+
+    Args:
+        text (str): The text to be normalized and lemmatized.
+        lemmer: A lemmatizer object.
+        remove_punct_dict: A dictionary for removing punctuation.
+
+    Returns:
+        list: A list of lemmatized tokens.
+    """
+    return LemTokens(nltk.word_tokenize(text.lower().translate(remove_punct_dict)))
 
 
 def response(user_response):
+    """
+    Generates a response from the chatbot based on the user's input.
+
+    Args:
+        user_response (str): The user's input.
+        sent_tokens (list): A list of sentence tokens.
+        TfidfVec: A TF-IDF vectorizer object.
+
+    Returns:
+        str: The chatbot's response.
+    """
     chatbot_response = ''
     sent_tokens.append(user_response)
     TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words="english")
@@ -82,7 +140,7 @@ def response(user_response):
     flat.sort()
     req_tfidf = flat[-2]
     if(req_tfidf == 0):
-        chatbot_response = chatbot_response + "I am sorry! I don't understand you"
+        chatbot_response = chatbot_response + "I am sorry! I don't understand you, try another keyword or parse data again."
         return chatbot_response
     
     else:
@@ -92,3 +150,5 @@ def response(user_response):
         next_sentences = sent_tokens[idx[-1]+1:idx[-1]+5]
         chatbot_response += '\n'.join(next_sentences)
         return chatbot_response
+
+

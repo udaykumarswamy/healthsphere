@@ -206,41 +206,41 @@
       }
 
       /* The Modal (background) */
-.modal {
-    display: none; /* Hidden by default */
-    position: fixed; /* Stay in place */
-    z-index: 9999; /* Sit on top */
-    left: 0;
-    top: 0;
-    width: 100%; /* Full width */
-    height: 100%; /* Full height */
-    overflow: auto; /* Enable scroll if needed */
-    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-  }
-  
-  /* Modal Content */
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto; /* 15% from the top and centered */
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%; /* Could be more or less, depending on screen size */
-  }
-  
-  /* The Close Button */
-  .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-  }
-  
-  .close:hover,
-  .close:focus {
-    color: black;
-    text-decoration: none;
-    cursor: pointer;
-  }
+      .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 9999; /* Sit on top */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+      }
+
+      /* Modal Content */
+      .modal-content {
+        background-color: #fefefe;
+        margin: 15% auto; /* 15% from the top and centered */
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%; /* Could be more or less, depending on screen size */
+      }
+
+      /* The Close Button */
+      .close {
+        color: #aaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+      }
+
+      .close:hover,
+      .close:focus {
+        color: black;
+        text-decoration: none;
+        cursor: pointer;
+      }
     </style>
     <script>
       /*
@@ -258,6 +258,7 @@
           chatBox.scrollTop = chatBox.scrollHeight;
         }
       }*/
+      /*
       function sendMessage() {
         var messageInput = document.getElementById("messageInput");
         var message = messageInput.value.trim();
@@ -294,8 +295,7 @@
             // Send the message as JSON to the other script
             xhr.send(JSON.stringify({ message: message }));
         }
-    }
-    
+    }*/
 
       // Function to update the time
       function updateTime() {
@@ -365,12 +365,12 @@
       </div>
     </div>
     <!-- Modal -->
-<div id="myModal" class="modal">
-    <div class="modal-content">
-      <span class="close">&times;</span>
-      <p>Error while crawling!</p>
+    <div id="myModal" class="modal">
+      <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Error while crawling!</p>
+      </div>
     </div>
-  </div>
   </body>
   <script>
     document.addEventListener("DOMContentLoaded", function () {
@@ -390,7 +390,7 @@
                 }, 3000); // Simulated processing time (3 seconds)
               } else {
                 console.error("Failed to start crawling.");
-                showModal()
+                showModal();
                 hideOverlay(); // Hide loading message on error
               }
             })
@@ -417,7 +417,7 @@
                 }, 3000); // Simulated processing time (3 seconds)
               } else {
                 console.error("Failed to parse");
-                showModal()
+                showModal();
                 hideOverlay(); // Hide loading message on error
               }
             })
@@ -427,6 +427,96 @@
             });
         });
     });
+
+    function sendMessage() {
+      var messageInput = document.getElementById("messageInput");
+      var message = messageInput.value.trim();
+
+      if (message !== "") {
+        sendMessageAndUpdateChat(message);
+      }
+    }
+
+    function sendMessageAndUpdateChat(message) {
+      var chatBox = document.getElementById("chatBox");
+      var messageDiv = document.createElement("div");
+      messageDiv.textContent = message;
+      messageDiv.classList.add("message", "sent");
+      chatBox.appendChild(messageDiv);
+      messageInput.value = ""; // Clear the input field after sending the message
+      chatBox.scrollTop = chatBox.scrollHeight;
+      // Define the list of predefined questions and corresponding responses
+      var staticResponses = {
+        "hello": "hello, how are you?",
+        "good":"nice to hear that!",
+        "im good":"nice to hear that!",
+        "thanks good too":"nice to hear that!",
+        "who are you?": "I am a Healthsphere chatbot developed by uday kumar swamy, with limited training dataset of skin and bone related diseases",
+        "thanks!":"welcome!",
+        "thanks":"welcome!",
+        "how are you?":"thanks im good! how are you?",
+        "bye":"bye, see you again!",
+        "who am i?":"im sorry i dont hold personal information!",
+        "who am i":"im sorry i dont hold personal information!",
+        "what do you do?":"i help you in finding related topics in seleceted data's",
+        "wrong":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
+        "incorrect":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
+        "its wrong":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
+        "its incorrect":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
+        "bye!":"bye, see you again!"
+        // Add more question-response pairs as needed
+      };
+
+      // Check if the message matches any predefined question
+      var response = staticResponses[message.toLowerCase()];
+      if (response) {
+        // Send the static response
+        var responseDiv = document.createElement("div");
+        responseDiv.textContent = response;
+        responseDiv.classList.add("message", "received");
+        chatBox.appendChild(responseDiv);
+        chatBox.scrollTop = chatBox.scrollHeight;
+        return; // Exit the function to prevent further processing
+      }
+
+      // Make an asynchronous request to another script
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", "/chat", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState === XMLHttpRequest.DONE) {
+          if (xhr.status === 200) {
+            // Handle the response from the other script
+            var response = xhr.responseText;
+            var responseDiv = document.createElement("div");
+            responseDiv.textContent = response;
+            responseDiv.classList.add("message", "received");
+            chatBox.appendChild(responseDiv);
+            chatBox.scrollTop = chatBox.scrollHeight;
+          } else {
+            // Handle errors
+            console.error("Error:", xhr.status);
+          }
+        }
+      };
+      // Send the message as JSON to the other script
+      xhr.send(JSON.stringify({ message: message }));
+    }
+
+    document
+      .getElementById("messageInput")
+      .addEventListener("keyup", function (event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+      });
+
+    // Add event listener for the Send button click
+    document
+      .getElementById("sendButton")
+      .addEventListener("click", function () {
+        sendMessage();
+      });
 
     // Function to show the overlay
     function showOverlay() {
@@ -439,14 +529,14 @@
     }
 
     function showModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "block";
+      var modal = document.getElementById("myModal");
+      modal.style.display = "block";
     }
-    
+
     // Function to close the modal
     function closeModal() {
-        var modal = document.getElementById("myModal");
-        modal.style.display = "none";
+      var modal = document.getElementById("myModal");
+      modal.style.display = "none";
     }
 
     // Example usage: show the overlay for 3 seconds

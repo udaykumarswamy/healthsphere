@@ -11,17 +11,32 @@ import logging
 import logging.config
 import os
 from bs4 import BeautifulSoup
+import configparser
 warnings.filterwarnings('ignore')
 
+# Read the properties file
+config = configparser.ConfigParser()
+config.read('config.properties')
 
+logConf = config.get('LogFile', 'logConfiguration')
+downloadPath = config.get('download','downloadPath')
+url = config.get('url','sourceUrl')
 
-
-logging.config.fileConfig('temp.conf')
+logging.config.fileConfig(logConf)
 logger = logging.getLogger('healthsphere')
-os.mkdir('/Users/uday_kumar_swamy/Documents/work/spring-2024/IR/IR_project/HealthSphere/healthdata')
+
 
 
 def crawlUrls(url):
+    """
+    Crawls a webpage for URLs containing 'health-topics/'.
+
+    Args:
+        url (str): The URL of the webpage to crawl.
+
+    Returns:
+        list: A list of URLs containing 'health-topics/'.
+    """
     logger.info("crawling started...")
     pdf_urls = []
     try:
@@ -39,6 +54,16 @@ def crawlUrls(url):
 
 
 def downLoadThePages(pdf_urls,download_dir):
+    """
+    Downloads PDF files from a list of URLs and saves them to the specified directory.
+
+    Args:
+        pdf_urls (list): A list of URLs to download PDF files from.
+        download_dir (str): The directory to save the downloaded PDF files.
+
+    Returns:
+        None
+    """
     logger.info('downloading the each disease details started...')
     for pdf_url in pdf_urls:
         filename = os.path.join(download_dir, pdf_url.split('/')[-1])
@@ -53,11 +78,10 @@ def downLoadThePages(pdf_urls,download_dir):
                         with open(filename+'.pdf', 'wb') as f:
                             f.write(response.content)
         except Exception as e:
-            #print(f"Failed to download {pdf_url}: {e}")
             logger.info('ignore certification')
     logger.info('downloading the each disease details completed...')
  
-url = "https://www.niams.nih.gov/health-topics/all-diseases"
-download_dir = "/Users/uday_kumar_swamy/Documents/work/spring-2024/IR/IR_project/HealthSphere/healthdata"
+
+download_dir = downloadPath
 pdf_urls = crawlUrls(url)
 downLoadThePages(pdf_urls, download_dir)
