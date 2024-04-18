@@ -51,7 +51,7 @@ Step 5: type message in chat box to get response.
 <br>
 
 ## System Design 
-![system design](images/systemdesign.png)
+![system design](/images/systemdesign.png)
 
 ### Section 1: Manipulating Page File
 -----
