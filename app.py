@@ -47,7 +47,7 @@ def crawl():
     Returns:
         str: A message indicating that data crawling is in progress.
     """
-    subprocess.run(['python', 'healthsphere/crawler/datacrawler.py'])
+    subprocess.run(['python', 'crawler/datacrawler.py'])
     return 'Crawling data...'
 
 @app.route('/parse')

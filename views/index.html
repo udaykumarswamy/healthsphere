@@ -243,59 +243,6 @@
       }
     </style>
     <script>
-      /*
-      function sendMessage() {
-        var messageInput = document.getElementById("messageInput");
-        var message = messageInput.value.trim();
-        if (message !== "") {
-          var chatBox = document.getElementById("chatBox");
-          var messageDiv = document.createElement("div");
-          messageDiv.textContent = message;
-          messageDiv.classList.add("message", "sent");
-          chatBox.appendChild(messageDiv);
-          messageInput.value = ""; // Clear the input field after sending the message
-          // Scroll to the bottom of the chat box after adding a new message
-          chatBox.scrollTop = chatBox.scrollHeight;
-        }
-      }*/
-      /*
-      function sendMessage() {
-        var messageInput = document.getElementById("messageInput");
-        var message = messageInput.value.trim();
-        
-        if (message !== "") {
-            var chatBox = document.getElementById("chatBox");
-            var messageDiv = document.createElement("div");
-            messageDiv.textContent = message;
-            messageDiv.classList.add("message", "sent");
-            chatBox.appendChild(messageDiv);
-            messageInput.value = ""; // Clear the input field after sending the message
-            chatBox.scrollTop = chatBox.scrollHeight;
-    
-            // Make an asynchronous request to another script
-            var xhr = new XMLHttpRequest();
-            xhr.open("POST", "/chat", true);
-            xhr.setRequestHeader("Content-Type", "application/json");
-            xhr.onreadystatechange = function() {
-                if (xhr.readyState === XMLHttpRequest.DONE) {
-                    if (xhr.status === 200) {
-                        // Handle the response from the other script
-                        var response = xhr.responseText;
-                        var responseDiv = document.createElement("div");
-                        responseDiv.textContent = response;
-                        responseDiv.classList.add("message", "received");
-                        chatBox.appendChild(responseDiv);
-                        chatBox.scrollTop = chatBox.scrollHeight;
-                    } else {
-                        // Handle errors
-                        console.error('Error:', xhr.status);
-                    }
-                }
-            };
-            // Send the message as JSON to the other script
-            xhr.send(JSON.stringify({ message: message }));
-        }
-    }*/
 
       // Function to update the time
       function updateTime() {
@@ -463,8 +410,10 @@
         "incorrect":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
         "its wrong":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
         "its incorrect":"im sorry im still being enhanced, accept my appologies!, try using another keywords",
-        "bye!":"bye, see you again!"
-        // Add more question-response pairs as needed
+        "bye!":"bye, see you again!",
+        "are you sure?": "based on the trained data this seems accurate, however please re-verify in the PDF file.",
+        "list of diseases?":"sjogrens-syndrome, scleroderma, hip-replacement-surgery, osteogenesis-imperfecta, vitiligo, rheumatoid-arthritis, surgeon-generals-report-bone-health-and-osteoporosis-what-it-means-you, rosacea, raynauds-phenomenon, psoriasis, polymyalgia-rheumatica-giant-cell-arteritis, pagets-disease-bone, marfan-syndrome, carpal-tunnel-syndrome, reactive-arthritis, juvenile-arthritis, calcium-and-vitamin-d-important-bone-health, osteonecrosis, pemphigus, alopecia-areata, atopic-dermatitis, growth-plate-injuries, hidradenitis-suppurativa-hs, spinal-stenosis, acne, autoimmune-diseases, juvenile-osteoporosis, fibrous-dysplasia, back-pain, fibromyalgia, pregnancy-breastfeeding-and-bone-health, kids-and-their-bones, pachyonychia-congenita, osteoarthritis, lupus, scoliosis, ichthyosis, bone-mineral-density-tests-what-numbers-mean, psoriatic-arthritis, ankylosing-spondylitis, epidermolysis-bullosa, osteoporosis, bone-health-and-osteoporosis, preventing-another-broken-bone, what-bone, autoinflammatory-diseases, gout, sports-injuries, arthritis, exercise-your-bone-health, osteoporosis-men, osteoporosis",
+        "list":"sjogrens-syndrome, scleroderma, hip-replacement-surgery, osteogenesis-imperfecta, vitiligo, rheumatoid-arthritis, surgeon-generals-report-bone-health-and-osteoporosis-what-it-means-you, rosacea, raynauds-phenomenon, psoriasis, polymyalgia-rheumatica-giant-cell-arteritis, pagets-disease-bone, marfan-syndrome, carpal-tunnel-syndrome, reactive-arthritis, juvenile-arthritis, calcium-and-vitamin-d-important-bone-health, osteonecrosis, pemphigus, alopecia-areata, atopic-dermatitis, growth-plate-injuries, hidradenitis-suppurativa-hs, spinal-stenosis, acne, autoimmune-diseases, juvenile-osteoporosis, fibrous-dysplasia, back-pain, fibromyalgia, pregnancy-breastfeeding-and-bone-health, kids-and-their-bones, pachyonychia-congenita, osteoarthritis, lupus, scoliosis, ichthyosis, bone-mineral-density-tests-what-numbers-mean, psoriatic-arthritis, ankylosing-spondylitis, epidermolysis-bullosa, osteoporosis, bone-health-and-osteoporosis, preventing-another-broken-bone, what-bone, autoinflammatory-diseases, gout, sports-injuries, arthritis, exercise-your-bone-health, osteoporosis-men, osteoporosis"
       };
 
       // Check if the message matches any predefined question
