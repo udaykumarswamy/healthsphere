@@ -22,7 +22,7 @@ Skin and Bone-related Diseases: The chatbot specializes in providing information
 
 
 # contributors
-- [Uday kumar swamy (A20526852)](https://github.com/udaykumarswamy) - 100%
+- [Uday kumar swamy (A20526852)](https://github.com/udaykumarswamy)
 
 
 
