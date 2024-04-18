@@ -50,7 +50,8 @@ python app.py
 ```
 ### Step 3: Access the Web Application
 Open your web browser and enter the following URL in the address bar:
-```http://127.0.0.1:8080/
+```
+http://127.0.0.1:8080/
 ```
 
 ### Step 4: Crawl Data
