@@ -50,8 +50,13 @@ python app.py
 ```
 ### Step 3: Access the Web Application
 Open your web browser and enter the following URL in the address bar:
-```http://127.0.0.1:8080/
 ```
+http://127.0.0.1:8080/
+
+```
+
+### Step 4: Crawl Data
+Once the web application is open in your browser, click on the "Crawl Data" button.
 
 ### Step 5: Parse Data
 After crawling the data, click on the "Parse Data" button to parse the crawled data.
