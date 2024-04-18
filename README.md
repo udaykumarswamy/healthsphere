@@ -33,25 +33,38 @@ Skin and Bone-related Diseases: The chatbot specializes in providing information
 pip install -r requirements.txt
 ```
 
-## steps to run code
+## Steps to Run the Code
 
-Step 1: Go to the "healthsphere" folder in the Step 1 location. 
+Follow these steps to run the HealthSphere Chatbot code:
 
-Step 2: run the command python app.py
+### Step 1: Navigate to the HealthSphere Folder
 
-Step 3: click crawl data 
+Go to the "healthsphere" folder located in the Step 1 location.
 
-Step 4: click parse data 
+### Step 2: Run the Flask Application
 
-Step 5: type message in chat box to get response.
+Open a terminal or command prompt, navigate to the "healthsphere" folder, and run the following command:
 
+```bash
+python app.py
+```
+### Step 3: Access the Web Application
+Open your web browser and enter the following URL in the address bar:
+```http://127.0.0.1:8080/
+```
+
+### Step 5: Parse Data
+After crawling the data, click on the "Parse Data" button to parse the crawled data.
+
+### Step 6: Query the Engine
+You can now type your message and press Enter in the chatbox to query the HealthSphere chatbot engine.
 <p>
  
 </p>
 <br>
 
 ## System Design 
-![system design](/images/systemdesign.png)
+![system design](images/systemdesign.png)
 
 ### Section 1: Manipulating Page File
 -----
