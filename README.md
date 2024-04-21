@@ -156,7 +156,7 @@ By employing text preprocessing, tokenization, and similarity matching technique
 
 # Sample outputs
 ![image1](images/output-image-1.png)
-![image2](images/output-image-1.png)
+![image2](images/output-image-2.png)
 
 ## User Feature Enhancements
 
