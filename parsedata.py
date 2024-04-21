@@ -6,6 +6,7 @@ Created on Sat Apr 13 15:27:47 2024
 @author: uday_kumar_swamy
 """
 from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.metrics.pairwise import cosine_distances
 from sklearn.metrics.pairwise import cosine_similarity
 import nltk
 import warnings
@@ -139,6 +140,16 @@ def response(user_response):
     flat = vals.flatten()
     flat.sort()
     req_tfidf = flat[-2]
+    distances = cosine_distances(tfidf[-1], tfidf[:-1])[0]  # Compute cosine distances with all documents except the last one (user_response)
+    idx_distances = [(i, distance) for i, distance in enumerate(distances)]
+    idx_distances.sort(key=lambda x: x[1])  # Sort based on distances
+    top_5_idx_distances = idx_distances[:5]  # Get the top 5 distances and their indices
+    
+    # Extract information about the matched documents and their indices
+    matched_documents = [sent_tokens[i] for i, _ in top_5_idx_distances]
+    matched_indices = [i for i, _ in top_5_idx_distances]
+   
+    
     if(req_tfidf == 0):
         chatbot_response = chatbot_response + "I am sorry! I don't understand you, try another keyword or parse data again."
         return chatbot_response
@@ -146,9 +157,17 @@ def response(user_response):
     else:
         for i in range(4):
           chatbot_response += sent_tokens[idx[i]] + '\n'
-          # Add the next 3 sentences after the matched sentence
+          
         next_sentences = sent_tokens[idx[-1]+1:idx[-1]+5]
         chatbot_response += '\n'.join(next_sentences)
-        return chatbot_response
+        distances_str = '\n'.join([str(d) for d in top_5_idx_distances])
+        indices_str = '\n'.join([str(i) for i in matched_indices])
+
+        chatbot_response += '\n'.join(matched_documents)
+        chatbot_response += '\n\n'
+
+        chatbot_response += 'Distances:\n' + distances_str + '\n\n'
+        chatbot_response += 'Indices:\n' + indices_str
+        return chatbot_response 
 
 
