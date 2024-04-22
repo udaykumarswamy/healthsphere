@@ -16,6 +16,7 @@ import string
 import logging
 import logging.config
 import configparser
+import pickle
 nltk.download('punkt')
 warnings.filterwarnings('ignore')
 
@@ -81,6 +82,12 @@ def tokenise(corpus):
     word_tokens = nltk.word_tokenize(corpus) #converts to list of words
     sentToken = sent_tokens[:4]
     wordToken = word_tokens[:4] 
+    # Assuming `data` is the data you want to save
+    data = {'sent_tokens': sent_tokens, 'word_tokens': word_tokens}
+
+    # Serialize and save the data to a pickle file
+    with open('data.pickle', 'wb') as f:
+        pickle.dump(data, f)
     
  
    
@@ -131,6 +138,11 @@ def response(user_response):
     Returns:
         str: The chatbot's response.
     """
+    with open('data.pickle', 'rb') as f:
+        data = pickle.load(f)
+    # Access the data from the loaded pickle file
+    sent_tokens = data['sent_tokens']
+    word_tokens = data['word_tokens']
     chatbot_response = ''
     sent_tokens.append(user_response)
     TfidfVec = TfidfVectorizer(tokenizer=LemNormalize, stop_words="english")
@@ -158,7 +170,7 @@ def response(user_response):
         for i in range(4):
           chatbot_response += sent_tokens[idx[i]] + '\n'
           
-        next_sentences = sent_tokens[idx[-1]+1:idx[-1]+5]
+        next_sentences = sent_tokens[idx[-1]+1:idx[-1]+4]
         chatbot_response += '\n'.join(next_sentences)
         distances_str = '\n'.join([str(d) for d in top_5_idx_distances])
         indices_str = '\n'.join([str(i) for i in matched_indices])

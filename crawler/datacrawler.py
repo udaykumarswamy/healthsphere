@@ -53,7 +53,7 @@ def crawlUrls(url):
     return pdf_urls
 
 
-def downLoadThePages(pdf_urls,download_dir):
+def downLoadThePages(pdf_urls,download_dir):  
     """
     Downloads PDF files from a list of URLs and saves them to the specified directory.
 
