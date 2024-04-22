@@ -180,3 +180,12 @@ By integrating with large language models like OpenAI's GPT-3 or LLAMA-2, the He
 These examples demonstrate how the Query Engine responds to various user queries by providing relevant information and suggesting related possible questions, Questions should be limited to PDF's uploaded, if failes to respond correctly try parse data again and query.
 
 
+# References
+
+- Dave, Tirth, Sai Anirudh Athaluri, and Satyam Singh. 2023. “ChatGPT in Medicine: An Overview of Its Applications, Advantages, Limitations, Future Prospects, and Ethical Considerations.” Frontiers in Artificial Intelligence 6 (May). https://doi.org/10.3389/frai.2023.1169595.
+
+- Lahitani, Alfirna Rizqi, Adhistya Erna Permanasari, and Noor Akhmad Setiawan. 2016. “Cosine Similarity to Determine Similarity Measure: Study Case in Online Essay Assessment.” IEEE Xplore. April 1, 2016. https://doi.org/10.1109/CITSM.2016.7577578.
+
+‌
+
+‌
