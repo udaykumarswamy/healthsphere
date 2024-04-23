@@ -163,23 +163,28 @@ def response(user_response):
    
     
     if(req_tfidf == 0):
-        chatbot_response = chatbot_response + "I am sorry! I don't understand you, try another keyword or parse data again."
+        chatbot_response = chatbot_response + "I'm sorry, I didn't understand. Please try using a different keyword or parse the data again."
         return chatbot_response
     
     else:
         for i in range(4):
           chatbot_response += sent_tokens[idx[i]] + '\n'
-          
-        next_sentences = sent_tokens[idx[-1]+1:idx[-1]+4]
-        chatbot_response += '\n'.join(next_sentences)
+        
+        next_sentences = sent_tokens[idx[-1]:idx[-1]+5]
+        for sentence in next_sentences:
+         if sentence not in chatbot_response:
+            chatbot_response += sentence + '\n'
+
         distances_str = '\n'.join([str(d) for d in top_5_idx_distances])
         indices_str = '\n'.join([str(i) for i in matched_indices])
 
-        chatbot_response += '\n'.join(matched_documents)
-        chatbot_response += '\n\n'
+        for document in matched_documents:
+            if document not in chatbot_response:
+                chatbot_response += document + '\n'
 
+        chatbot_response += '\n\n'
         chatbot_response += 'Distances:\n' + distances_str + '\n\n'
         chatbot_response += 'Indices:\n' + indices_str
-        return chatbot_response 
+        return chatbot_response
 
 
