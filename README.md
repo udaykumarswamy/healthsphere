@@ -1,4 +1,4 @@
-<h1 align="center">   INFORMATION RETRIEVAL: HEALTHSPHERE 
+<h1 align="center">   HEALTHSPHERE 
 </h1>
 
 # healthsphere chatbot description:
