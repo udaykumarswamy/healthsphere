@@ -1,4 +1,4 @@
-<h1 align="center">  CS 429: INFORMATION RETRIEVAL: HEALTHSPHERE (COURSE PROJECT)
+<h1 align="center">   INFORMATION RETRIEVAL: HEALTHSPHERE 
 </h1>
 
 # healthsphere chatbot description:
